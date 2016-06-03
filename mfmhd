@@ -10,7 +10,7 @@ $targetDir = "/directory/where/the/files/go";
 $num_args = $#ARGV + 1;
 
 if ($num_args < 1) {
-	print "cpmdtc: You must supply the prefix of an disk image!\n";
+	print "mfmhd: You must supply the prefix of an disk image!\n";
 	print "eg if you want to make 1-2-2.img and 1-2-2.log enter\n";
 	print "mfmhd 1-2-2\n";
 	exit;
