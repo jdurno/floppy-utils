@@ -1,3 +1,3 @@
-# floppyExtractor
+# floppy-utils
 
-Sample scripts for processing floppy disk images
+Sample scripts for acquiring and processing floppy disk images
