@@ -1,0 +1,31 @@
+#!/usr/bin/perl
+
+# mfmhd - canned instructions for the Kryoflux for processing high density
+# mfm encoded floppy disks
+#creates specified disk image and log file
+#must be run from within the same directory as the Kryoflux dtc executable
+
+$targetDir = "/directory/where/the/files/go";
+
+$num_args = $#ARGV + 1;
+
+if ($num_args < 1) {
+	print "cpmdtc: You must supply the prefix of an disk image!\n";
+	print "eg if you want to make 1-2-2.img and 1-2-2.log enter\n";
+	print "mfmhd 1-2-2\n";
+	exit;
+}
+
+$prefix = $ARGV[0];
+$imagefile = $prefix . '.img';
+$logfile = $prefix . '.log';
+
+
+# For 5.25" HD (1.2 MB) disks
+# system("./dtc -f$targetDir/$imagefile -v360 -i4 > $targetDir/$logfile");
+
+#for 3.5" HD (1.44MB) disks
+system("./dtc -f$targetDir/$imagefile -i4 > $targetDir/$logfile");
+
+
+

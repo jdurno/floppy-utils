@@ -1,0 +1,29 @@
+#!/usr/bin/perl
+
+#cpmdtc - canned instructions for the Kryoflux 
+#for processing double-density CPM disks
+#creates specified disk image and log file
+
+#must be run from within the same directory as the Kryoflux dtc executable
+
+$targetDir = "/directory/where/you/want/the/files";
+
+$num_args = $#ARGV + 1;
+
+if ($num_args < 1) {
+	print "cpmdtc: You must supply the prefix of an disk image!\n";
+	print "eg if you want to make 1-2-2.img and 1-2-2.log enter\n";
+	print "cpmdtc 1-2-2\n";
+	exit;
+}
+
+$prefix = $ARGV[0];
+$imagefile = $prefix . '.img';
+$logfile = $prefix . '.log';
+
+system("./dtc -f$targetDir/$imagefile -k2 -i4 > $targetDir/$logfile");
+
+
+
+
+

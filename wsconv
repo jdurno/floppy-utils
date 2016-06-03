@@ -1,0 +1,23 @@
+#!/usr/bin/perl
+#convert old Wordstar 7-bit files to 8-bit ASCII text.
+
+$num_args = $#ARGV + 1;
+
+if ($num_args < 1) {
+	print "wsconv: You must supply the name of a WordStar file to convert!\n";
+	exit;
+}
+
+$filename = $ARGV[0];
+
+open OUTFILE, ">$filename.txt";
+open INFILE, "<$filename";
+while (<INFILE>)
+{
+  tr [\200-\377] [\000-\177];
+  print OUTFILE $_;
+}
+close INFILE;
+close OUTFILE;
+
+

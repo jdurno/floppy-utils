@@ -1,0 +1,69 @@
+#!/usr/bin/perl
+
+use File::Copy qw(move);
+
+#cpmingest
+#script to process CPM disk images & logs created by cpmdtc
+
+#make sure there's a prefix parameter
+#usage: cpmingest <prefix> where prefix is the root of the image & log file name, eg:
+# cpmingest 1-2-2 [where 1-2-2.img and 1-2-2.log are the names of the files]
+
+$num_args = $#ARGV + 1;
+
+if ($num_args < 1) {
+	print "cpmingest: You must supply the prefix of an disk image!\n";
+	print "eg if 1-2-2.img and 1-2-2.log are the files enter\n";
+	print "cpmingest 1-2-2\n";
+	exit;
+}
+
+#make sure there isn't already a directory by that name
+$prefix = $ARGV[0];
+
+if (-e $prefix) {
+	die "$prefix already exists! Exiting now\n";
+}
+
+$imagefile = $prefix . '.img';
+$logfile = $prefix . '.log';
+
+#warn if no match found in directory
+if (! -e $imagefile) {
+	die ("No corresponding disk image file found! Cannot continue.\n");
+}
+
+if (! -e $logfile) {
+	print "Warning! No log file file found for $logfile\n";
+}
+
+#if matching image found then
+#create the necessary directories
+mkdir $prefix, 0755;
+mkdir "$prefix/content", 0755;
+mkdir "$prefix/meta", 0755;
+mkdir "$prefix/image", 0755;
+
+
+#move the image and log files to their appropriate locations
+move $imagefile, "$prefix/image/$imagefile";
+
+#checksum the image
+system("md5sum $prefix/image/$imagefile > $prefix/meta/checksum.md5");
+
+#mv prefix.log prefix/meta, if it exists
+if (-e $logfile) {
+	move $logfile, "$prefix/meta/$logfile";
+}
+
+# create the directory listing
+system("cpmls -l -i -c -f kpii $prefix/image/$imagefile > $prefix/meta/index.txt");
+
+#extract the content files
+system("cpmcp -p -f kpii $prefix/image/$imagefile 0:* $prefix/content/");
+
+#run the virus scan
+system("clamscan -r $prefix > $prefix/meta/virus.txt");
+
+
+
