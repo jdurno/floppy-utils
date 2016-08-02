@@ -2,7 +2,7 @@
 
 use File::Copy qw(move);
 
-#cpmingest
+#dosingest
 #script to process DOS disk images & logs 
 
 #make sure there's a prefix parameter
